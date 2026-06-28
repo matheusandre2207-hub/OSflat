@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mock OS</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="screen-container">
+        
+        <header id="status-bar">
+            <div class="status-zone left" id="trigger-notifications">
+                <span id="status-time">00:00</span>
+            </div>
+            <div class="status-zone right" id="trigger-utilities">
+                <span class="status-icon">📶</span>
+                <span class="status-icon" id="battery-icon">🔋</span>
+                <span id="battery-level">--%</span>
+            </div>
+        </header>
+
+        <div id="panel-notifications" class="top-panel closed">
+            <div class="panel-header">Notificações</div>
+            <div class="panel-content">
+                <div class="notification-item">
+                    <strong>Sistema</strong>
+                    <p>Mock OS instalado com sucesso. Toque para explorar!</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-utilities" class="top-panel closed">
+            <div class="panel-header">Controles Rápidos</div>
+            <div class="panel-content">
+                <div class="control-row">
+                    <button class="toggle-btn active" id="btn-wifi">🌐 Wi-Fi</button>
+                    <button class="toggle-btn active" id="btn-bluetooth">🔷 Bluetooth</button>
+                </div>
+                <div class="slider-row">
+                    <span>☀️</span>
+                    <input type="range" id="brightness-slider" min="20" max="100" value="100">
+                </div>
+            </div>
+        </div>
+        
+        <div id="wallpaper"></div>
+        
+        <div id="overlay-blur" class="hidden"></div>
+
+        <main id="home-screen">
+            <div id="swipe-trigger"></div>
+        </main>
+
+        <aside id="app-drawer" class="closed">
+            <div class="drawer-header">
+                <div class="drawer-header-left">
+                    <span class="grid-icon">⣿</span>
+                    <span class="drawer-title">Grade de aplicativos</span>
+                </div>
+                <span class="drawer-time" id="drawer-status-time">00:00</span>
+            </div>
+
+            <div class="drawer-list">
+                <div class="drawer-item" data-app="arquivos">
+                    <div class="app-icon icon-blue">📂</div>
+                    <span class="app-label">Arquivos</span>
+                </div>
+                <div class="drawer-item" data-app="calculadora">
+                    <div class="app-icon icon-orange">➕</div>
+                    <span class="app-label">Calculadora</span>
+                </div>
+                <div class="drawer-item" data-app="configuracoes">
+                    <div class="app-icon icon-gray">⚙️</div>
+                    <span class="app-label">Configurações</span>
+                </div>
+                <div class="drawer-item" data-app="galeria">
+                    <div class="app-icon icon-rainbow">🖼️</div>
+                    <span class="app-label">Galeria</span>
+                </div>
+                <div class="drawer-item" data-app="mensagens">
+                    <div class="app-icon icon-green">💬</div>
+                    <span class="app-label">Mensagens</span>
+                </div>
+                <div class="drawer-item" data-app="musica">
+                    <div class="app-icon icon-red">🎵</div>
+                    <span class="app-label">Música</span>
+                </div>
+                <div class="drawer-item" data-app="navegador">
+                    <div class="app-icon icon-purple">🌐</div>
+                    <span class="app-label">Navegador</span>
+                </div>
+            </div>
+
+            <div class="drawer-footer">
+                <span id="drawer-current-date">Segunda, 15 de Outubro</span>
+            </div>
+        </aside>
+
+        <footer id="bottom-dock">
+            <div class="dock-icon">💬</div>
+            <div class="dock-icon">🛍️</div>
+            <div class="dock-icon">🖋️</div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Registro do Service Worker obrigatório do PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

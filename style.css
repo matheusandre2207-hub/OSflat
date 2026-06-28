@@ -1,0 +1,337 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    overflow: hidden;
+}
+
+#screen-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    transition: filter 0.1s linear;
+}
+
+/* WALLPAPER ANIMAÇÃO METAL SHIFT */
+#wallpaper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #a6afb8, #cbd4dc, #5e6468, #e3e9ed);
+    background-size: 300% 300%;
+    filter: blur(8px);
+    animation: metalMix 12s ease-in-out infinite alternate;
+    z-index: 1;
+}
+
+@keyframes metalMix {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+/* OVERLAY BLUR REALISTA */
+#overlay-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(25px) saturate(120%);
+    -webkit-backdrop-filter: blur(25px) saturate(120%);
+    z-index: 5;
+    transition: opacity 0.35s ease;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* BARRA DE STATUS MINIMALISTA */
+#status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 24px 0 24px;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 25;
+}
+
+.status-zone {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 100%;
+    padding: 0 4px;
+}
+
+/* PAINÉIS MODERNOS COM CANTOS CURVOS ARREDONDADOS */
+.top-panel {
+    position: absolute;
+    top: 54px;
+    width: 290px;
+    background-color: rgba(30, 32, 35, 0.75);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    padding: 18px;
+    z-index: 20;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+
+#panel-notifications { left: 16px; }
+#panel-utilities { right: 16px; }
+
+.top-panel.closed {
+    transform: translateY(-30px) scale(0.92);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.panel-header {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.notification-item {
+    background: rgba(255, 255, 255, 0.07);
+    padding: 12px;
+    border-radius: 16px;
+}
+
+.notification-item strong {
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.notification-item p {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.3;
+}
+
+.control-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.toggle-btn {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.toggle-btn:active { transform: scale(0.96); }
+.toggle-btn.active { background-color: #007aff; }
+
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 12px 16px;
+    border-radius: 16px;
+}
+
+.slider-row input[type=range] {
+    flex: 1;
+    accent-color: #007aff;
+    cursor: pointer;
+}
+
+/* HOME SCREEN E ACIONADORES */
+#home-screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+#swipe-trigger {
+    position: absolute;
+    top: 44px;
+    left: 0;
+    width: 24px;
+    height: calc(100% - 134px);
+    z-index: 4;
+}
+
+/* GAVETA DE APPS LATERAL */
+#app-drawer {
+    position: absolute;
+    top: 54px;
+    left: 16px;
+    width: 280px;
+    height: calc(100% - 164px);
+    background-color: rgba(30, 32, 35, 0.72);
+    backdrop-filter: blur(35px);
+    -webkit-backdrop-filter: blur(35px);
+    border-radius: 28px;
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#app-drawer.closed {
+    transform: translateX(-340px);
+}
+
+.drawer-header {
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.drawer-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.grid-icon {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+}
+
+.drawer-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.drawer-time {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+}
+
+.drawer-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px;
+}
+
+.drawer-list::-webkit-scrollbar { width: 0px; }
+
+.drawer-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 6px;
+    margin-bottom: 4px;
+    border-radius: 16px;
+    transition: background 0.2s;
+}
+
+.drawer-item:active { background-color: rgba(255, 255, 255, 0.08); }
+
+.app-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    margin-right: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.icon-blue { background: #007aff; }
+.icon-orange { background: #ff9500; }
+.icon-gray { background: #8e8e93; }
+.icon-rainbow { background: linear-gradient(45deg, #ff3b30, #ff9500, #4cd964, #5ac8fa, #5856d6); }
+.icon-green { background: #4cd964; }
+.icon-red { background: #ff3b30; }
+.icon-purple { background: #5856d6; }
+
+.app-label {
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.drawer-footer {
+    padding: 16px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* DOCK COMPLETA RETANGULAR COM CANTOS SUPERIORES MACIOS */
+#bottom-dock {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 84px;
+    background-color: rgba(55, 58, 62, 0.85);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px 24px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    z-index: 2;
+    padding-bottom: 10px;
+}
+
+.dock-icon {
+    width: 52px;
+    height: 52px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    transition: transform 0.15s ease;
+}
+
+.dock-icon:active { transform: scale(0.88); }
