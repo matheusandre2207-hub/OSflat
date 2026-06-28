@@ -14,12 +14,18 @@ const btnBluetooth = document.getElementById('btn-bluetooth');
 const brightnessSlider = document.getElementById('brightness-slider');
 const screenContainer = document.getElementById('screen-container');
 
+// ELEMENTOS DA NOVA PÍLULA DE STATUS
+const dot1 = document.getElementById('dot1');
+const dot2 = document.getElementById('dot2');
+const dot3 = document.getElementById('dot3');
+
 // CONTROLE DA GAVETA LATERAL
 function openDrawer() {
     appDrawer.classList.remove('closed');
     overlayBlur.classList.remove('hidden');
 }
 
+// FECHAMENTO DA GAVETA LATERAL
 function closeDrawer() {
     appDrawer.classList.add('closed');
     if (panelNotifications.classList.contains('closed') && panelUtilities.classList.contains('closed')) {
@@ -93,14 +99,56 @@ function updateSystemTime() {
 setInterval(updateSystemTime, 1000);
 updateSystemTime();
 
-// BATERIA REAL DO SMARTPHONE
+// LÓGICA COMPLETA DE RENDERIZAÇÃO DOS TRÊS PONTINHOS DA BATERIA (...)
 if ('getBattery' in navigator) {
     navigator.getBattery().then(battery => {
         function updateBatteryStatus() {
             const level = Math.round(battery.level * 100);
-            document.getElementById('battery-level').textContent = `${level}%`;
-            document.getElementById('battery-icon').textContent = battery.charging ? '🔌' : '🔋';
+            const isCharging = battery.charging;
+
+            // Limpa todas as classes de animação e estados anteriores
+            [dot1, dot2, dot3].forEach(dot => {
+                dot.className = 'dot'; 
+            });
+
+            // 1. CENÁRIO DISPOSITIVO CARREGANDO
+            if (isCharging) {
+                if (level < 33) {
+                    // Abaixo de 30% (conforme solicitado): O último ponto visível (neste caso o primeiro) pisca lento
+                    dot1.classList.add('blink-slow');
+                } else if (level >= 33 && level < 66) {
+                    dot1.classList.add('charged');
+                    dot2.classList.add('blink-charge');
+                } else if (level >= 66 && level < 100) {
+                    dot1.classList.add('charged');
+                    dot2.classList.add('charged');
+                    dot3.classList.add('blink-charge');
+                } else {
+                    // 100% carregado: Para tudo aceso firme
+                    dot1.classList.add('charged');
+                    dot2.classList.add('charged');
+                    dot3.classList.add('charged');
+                }
+            } 
+            // 2. CENÁRIO DISPOSITIVO DESCARREGANDO
+            else {
+                if (level <= 20) {
+                    // Abaixo de 20%: Apenas o último ponto ativo e piscando rápido continuamente
+                    dot1.classList.add('blink-fast');
+                } else if (level > 20 && level <= 33) {
+                    dot1.classList.add('charged');
+                } else if (level > 33 && level <= 66) {
+                    dot1.classList.add('charged');
+                    dot2.classList.add('charged'); // O terceiro ponto fica opacado nativamente
+                } else {
+                    // Acima de 66%: Todos os 3 pontos visíveis e acesos fixos
+                    dot1.classList.add('charged');
+                    dot2.classList.add('charged');
+                    dot3.classList.add('charged');
+                }
+            }
         }
+
         updateBatteryStatus();
         battery.addEventListener('levelchange', updateBatteryStatus);
         battery.addEventListener('chargingchange', updateBatteryStatus);
@@ -123,7 +171,7 @@ window.addEventListener('popstate', () => {
     lockHistory();
 });
 
-// SUPORTE A SWIPE TOUCH LATERAL (Arrastar para abrir a gaveta)
+// SUPORTE A SWIPE TOUCH LATERAL
 let touchStartX = 0;
 homeScreen.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
 homeScreen.addEventListener('touchend', e => {

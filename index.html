@@ -17,10 +17,27 @@
             <div class="status-zone left" id="trigger-notifications">
                 <span id="status-time">00:00</span>
             </div>
+            
             <div class="status-zone right" id="trigger-utilities">
-                <span class="status-icon">📶</span>
-                <span class="status-icon" id="battery-icon">🔋</span>
-                <span id="battery-level">--%</span>
+                <div class="status-pill">
+                   <svg class="pill-svg" viewBox="0 0 24 24" id="wifi-icon" style="width: 17px; height: 13px; fill: none; stroke: #ffffff; stroke-width: 2.5; stroke-linecap: round;">
+    <circle cx="12" cy="19.5" r="1.2" fill="#ffffff" stroke="none" />
+    <path d="M8.5 15.5a5 3.2 0 0 1 7 0" />
+    <path d="M5 11.5a10 6 0 0 1 14 0" />
+    <path d="M1.5 7.5a15 8.5 0 0 1 21 0" />
+</svg>
+                    <div class="cellular-bars">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                        <div class="bar bar4"></div>
+                    </div>
+                    <div class="battery-dots" id="battery-container">
+                        <div class="dot" id="dot1"></div>
+                        <div class="dot" id="dot2"></div>
+                        <div class="dot" id="dot3"></div>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -34,19 +51,53 @@
             </div>
         </div>
 
+        
+   
         <div id="panel-utilities" class="top-panel closed">
-            <div class="panel-header">Controles Rápidos</div>
-            <div class="panel-content">
-                <div class="control-row">
-                    <button class="toggle-btn active" id="btn-wifi">🌐 Wi-Fi</button>
-                    <button class="toggle-btn active" id="btn-bluetooth">🔷 Bluetooth</button>
-                </div>
-                <div class="slider-row">
-                    <span>☀️</span>
-                    <input type="range" id="brightness-slider" min="20" max="100" value="100">
+    <div class="panel-top-cap"></div>
+
+    <div class="panel-center-content">
+        
+        <div class="panel-row-round-buttons">
+            <button class="round-btn active">✈️</button>
+            <button class="round-btn active">📡</button>
+            <button class="round-btn">🔦</button>
+            <button class="round-btn">🌙</button>
+        </div>
+
+        <div class="panel-sliders-container">
+            <div class="panel-slider-row">
+                <span class="slider-glyph">☀️</span>
+                <input type="range" id="brightness-slider" min="20" max="100" value="100">
+            </div>
+            <div class="panel-slider-row">
+                <span class="slider-glyph">🔊</span>
+                <input type="range" min="0" max="100" value="70">
+            </div>
+        </div>
+
+        <div class="panel-bottom-grid">
+            <div class="panel-vertical-toggles">
+                <button class="toggle-btn active" id="btn-wifi">🌐 Wi-Fi</button>
+                <button class="toggle-btn active" id="btn-bluetooth">🔷 Bluetooth</button>
+            </div>
+            
+            <div class="panel-media-player">
+                <span class="media-icon">🎵</span>
+                <div class="media-controls">
+                    <span>⏮️</span>
+                    <span>▶️</span>
+                    <span>⏭️</span>
                 </div>
             </div>
         </div>
+
+    </div>
+
+    <div class="panel-bottom-cap"></div>
+</div>
+
+        
         
         <div id="wallpaper"></div>
         
@@ -110,7 +161,6 @@
     </div>
 
     <script>
-        // Registro do Service Worker obrigatório do PWA
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
         }
